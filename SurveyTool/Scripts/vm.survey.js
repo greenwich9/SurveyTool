@@ -93,6 +93,7 @@
             q.title(data.Questions[i].Title);
             q.type(data.Questions[i].Type);
             q.body(data.Questions[i].Body);
+            q.isRequired(data.Questions[i].IsRequired);
             q.isActive(data.Questions[i].IsActive);
             self.questions.push(q);
         }

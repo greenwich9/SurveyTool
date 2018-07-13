@@ -29,6 +29,25 @@
                                 </div>
                             }
                         }
+                        else if (item.Type == "RadioBox")
+                        {
+                            if (@item.Answers.Count() > 0.0)
+                            {
+                                <div class="progress span2 pull-right" style="margin-bottom: 0">
+                                    <div class="bar bar-success" style="width: 100%">
+                                        @item.Answers.Count()
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="progress span2 pull-right" style="margin-bottom: 0">
+                                    <div class="bar bar-danger" style="width: 100%">
+                                        @item.Answers.Count()
+                                    </div>
+                                </div>
+                            }
+                        }
                         else
                         {
                             <div class="progress span2 pull-right" style="margin-bottom: 0">
@@ -37,11 +56,23 @@
                                 </div>
                             </div>
                         }
-                        @item.Title
+                        @Html.Raw(item.Body)
                     </a>
                 </div>
                 <div id="@String.Concat("item", i)" class="accordion-body collapse">
-                    <div class="accordion-inner">@Html.Raw(item.Body)</div>
+                    <div class="accordion-inner">
+                        <ul>
+                            @foreach (var opt in item.OptionsViewList)
+                            {
+                                
+                                decimal a = (decimal)opt.NumSelected / (decimal)item.Answers.Count;  //--> result 0,5
+                                decimal b = a * 100;  //--> 50
+                                
+                                <li>@Html.Raw(opt.Text) : @opt.NumSelected (@b.ToString("#.##") %)</li>
+                            }
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         }

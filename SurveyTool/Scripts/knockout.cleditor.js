@@ -16,7 +16,8 @@
 
             var $editor = $(element).cleditor({
                 height: 200,
-                controls: "bold italic underline | bullets numbering | color | undo redo",
+                controls: "bold italic underline | bullets numbering | color | undo redo" +
+                    " | rule image link unlink | cut copy paste pastetext | source",
                 colors: '000000 049CDB 46A546 9D261D FFC40D F89406 C3325F 7A48B6'
             });
             

@@ -44,7 +44,8 @@ namespace SurveyTool.Controllers
                        q.Type,
                        Answers = _db.Answers.Where(a => a.QuestionId == q.Id &&
                                                         a.Response.CreatedOn >= startDate.Value &&
-                                                        a.Response.CreatedOn <= endDate.Value)
+                                                        a.Response.CreatedOn <= endDate.Value),
+                       Options = _db.Options.Where(a => a.QuestionId == q.Id)
                    })
                .ToList()
                .ForEach(r => questions.Add(new QuestionViewModel
@@ -52,8 +53,41 @@ namespace SurveyTool.Controllers
                        Title = r.Title,
                        Body = r.Body,
                        Type = r.Type,
-                       Answers = r.Answers.ToList()
+                       Answers = r.Answers.ToList(),
+                       Options = r.Options.ToList(),
+                       OptionsViewList = new List<OptionViewModel>()
                    }));
+
+            foreach (QuestionViewModel q in questions)
+            {
+                if (q.Type.Equals("RadioBox"))
+                {
+                    var stat = from opt in q.Options
+                               select new OptionViewModel
+                               {
+                                   Id = opt.Id,
+                                   Text = opt.Text,
+                                   Priority = opt.Priority
+                               };
+                               
+                    
+                    var answerCount = from ans in q.Answers
+                                      group ans by ans.Value into grp
+                                      select new { Key = Convert.ToInt32(grp.Key), Count = grp.Count() };
+
+                    var res = from opt in stat
+                              join ans in answerCount on opt.Id equals ans.Key into joined
+                              from j in joined.DefaultIfEmpty()
+                              select new OptionViewModel
+                              {
+                                  Id = opt.Id,
+                                  Text = opt.Text,
+                                  Priority = opt.Priority,
+                                  NumSelected = j?.Count ?? 0
+                              };
+                    q.OptionsViewList = res.ToList();
+                }
+            }
 
             var vm = new ReportViewModel
                 {

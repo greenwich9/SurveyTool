@@ -6,6 +6,7 @@
     self.type = ko.observable().extend({ required: true });
     self.body = ko.observable().extend({ required: true });
     self.isActive = ko.observable(true);
+    self.isRequired = ko.observable().extend({ required: true });
 
     self.modal = $('#add-option');
     self.options = ko.observableArray([]);

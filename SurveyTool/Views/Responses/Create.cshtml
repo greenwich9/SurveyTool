@@ -37,41 +37,33 @@
                     @Html.Raw(question.Body)
                 </div>
                 <div class="span3">
-                    @if (question.Type == "Yes/No")
+
+                    @if (question.Type == "Text")
                     {
-                        <select class="span3" name="Answers[@question.Id].Value">
-                            <option disabled selected>Select a value...</option>
-                            <option>Yes</option>
-                            <option>No</option>
-                        </select>
+                        <input class="span3" type="text" name="Answers[@question.Id].Value" placeholder="Enter your answer." />
                     }
-                    @if (question.Type == "Number")
+                    @if (question.Type == "Multitext")
                     {
-                        <input class="span3" type="text" name="Answers[@question.Id].Value" placeholder="Enter a number..." />
+                        <input class="span3" type="text" name="Answers[@question.Id].Value" placeholder="Enter your answer." />
                     }
                     @if (question.Type == "RadioBox")
                     {
                         foreach (var option in question.Options)
                         {
-                            <input type="radio" name="Answers[@question.Id].Value" value="@option.Id"> @option.Text<br>
+                            <input type="radio" name="Answers[@question.Id].Value" value="@option.Id"> @Html.Raw(@option.Text)<br>
                         }
                         /**/
                         <br />
 
                     }
 
-                    <textarea id="@("comment" + question.Id)" class="span3 hide" name="Answers[@question.Id].Comment" placeholder="Comments..."></textarea>
-                    <a href="@("#comment" + @question.Id)" data-toggle="comment"><small>Show/Hide Comment</small></a>
                 </div>
             </li>
         }
     </ul>
     
     <div class="form-actions">
-        <button class="btn btn-inverse pull-right" name="action" value="Next">
-            Save and Enter Another
-        </button>
         <input class="btn btn-primary" type="submit" name="action" value="Save" />
-        <a class="btn" href="@Url.Action("Index", "Home")">Cancel</a>
+        <a class="btn" href="@Url.Action("Index", "DashBoard")">Cancel</a>
     </div>
 </form>

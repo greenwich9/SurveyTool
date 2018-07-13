@@ -24,6 +24,8 @@ namespace SurveyTool.Models
 
         public bool IsActive { get; set; }
 
+        public string IsRequired { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public DateTime ModifiedOn { get; set; }

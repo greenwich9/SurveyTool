@@ -20,5 +20,7 @@ namespace SurveyTool.Models
         //public Question Question { get; set; }
 
         public bool IsActive { get; set; }
+
+        
     }
 }

@@ -52,6 +52,7 @@ namespace SurveyTool.Controllers
         [HttpGet]
         public ActionResult Create(int surveyId)
         {
+            List<Question> questions = new List<Question>();
             var survey = _db.Surveys
                             .Where(s => s.Id == surveyId)
                             .Select(s => new
@@ -69,28 +70,55 @@ namespace SurveyTool.Controllers
                                  })
                              .Single();
 
-
-            foreach (var question in survey.Questions)
-            {
-                if (question.Type.Equals("RadioBox"))
+            survey.Questions.
+                Select(q => new
                 {
-                    System.Diagnostics.Debug.WriteLine("before " + question.Options.Count());
-                    //question.OptionString = BuildRadioBox(question.Options);
-                    foreach (var opt in _db.Options)
-                    {
-                        if (opt.QuestionId == question.Id)
-                        {
-                            question.Options.Add(opt);
-                            question.Options.RemoveAt(question.Options.Count() - 1);
-                            //System.Diagnostics.Debug.WriteLine(opt.Text);
-                            //System.Diagnostics.Debug.WriteLine("len " + question.Options.Count());
-                        }
+                    q.Id,
+                    q.SurveyId,
+                    q.Title,
+                    q.Body,
+                    q.Type,
+                    q.IsActive,
+                    q.CreatedOn,
+                    q.ModifiedOn,
+                    Options = _db.Options.Where(o => o.QuestionId == q.Id && o.IsActive == true).OrderBy(x => x.Priority)
+                })
+                .ToList()
+                .ForEach(q => questions.Add(new Question
+                {
+                    Id = q.Id,
+                    Title = q.Title,
+                    Body = q.Body,
+                    Type = q.Type,
+                    SurveyId = q.SurveyId,
+                    IsActive = q.IsActive,
+                    CreatedOn = q.CreatedOn,
+                    ModifiedOn = q.ModifiedOn,
+                    Options = q.Options.ToList()
+                }));
+
+            survey.Questions = questions;
+            //foreach (var question in survey.Questions)
+            //{
+            //    if (question.Type.Equals("RadioBox"))
+            //    {
+            //        //System.Diagnostics.Debug.WriteLine("before " + question.Options.Count());
+            //        //question.OptionString = BuildRadioBox(question.Options);
+            //        foreach (var opt in _db.Options)
+            //        {
+            //            if (opt.QuestionId == question.Id)
+            //            {
+            //                question.Options.Add(opt);
+            //                question.Options.RemoveAt(question.Options.Count() - 1);
+            //                //System.Diagnostics.Debug.WriteLine(opt.Text);
+            //                //System.Diagnostics.Debug.WriteLine("len " + question.Options.Count());
+            //            }
                         
-                    }
-                    question.Options = question.Options.Where(x=>x.IsActive == true).OrderBy(x => x.Priority).ToList();
+            //        }
+            //        question.Options = question.Options.Where(x=>x.IsActive == true).OrderBy(x => x.Priority).ToList();
                     
-                }
-            }
+            //    }
+            //}
             //var options = _db.Options;
             //foreach (var opt in options)
             //{
@@ -121,7 +149,7 @@ namespace SurveyTool.Controllers
 
             return action == "Next"
                        ? RedirectToAction("Create", new {surveyId})
-                       : RedirectToAction("Index", "Home");
+                       : RedirectToAction("Index", "DashBoard");
         }
 
         [HttpPost]

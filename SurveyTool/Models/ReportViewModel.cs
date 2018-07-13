@@ -12,6 +12,16 @@ namespace SurveyTool.Models
         public Survey Survey { get; set; }
         public List<QuestionViewModel> Responses { get; set; }
     }
+    public class OptionViewModel
+    {
+        public int Id { get; set; }
+
+        public string Text { get; set; }
+
+        public int Priority { get; set; }
+
+        public int NumSelected { get; set; }
+    }
 
     public class QuestionViewModel
     {
@@ -19,6 +29,8 @@ namespace SurveyTool.Models
         public string Body { get; set; }
         public string Type { get; set; }
         public List<Answer> Answers { get; set; }
+        public List<Option> Options { get; set; }
+        public List<OptionViewModel> OptionsViewList { get; set; }
 
         public int Score
         {
