@@ -61,7 +61,9 @@
                     @*<a data-bind="attr: { href: '/Question/Edit/'+id() }">
                         <span data-bind="visible: containOption()">Edit Options</span>
                     </a>*@
-                    <input id="btn1" type="submit" value="Edit Options" data-bind="attr: { formaction: '/Surveys/CreateOption/'+$index(), visiable: containOption}">
+                    <div data-bind="visible : containOption()">
+                        <input id="btn1" type="submit" value="Edit Options" data-bind="attr: { formaction: '/Surveys/EditOption/@Model.Id/'+$index() }">
+                    </div>
                     @*<input type="submit" value="Edit Options" onclick="javascript: form.action='/Question/Edit/10'">*@
                 </div>
                 <div class="span1 accordion-toggle text-center">
@@ -111,7 +113,7 @@
         <input type="hidden" data-bind="attr: { name: 'Questions['+$index()+'].Body', value: body }" />
         <input type="hidden" data-bind="attr: { name: 'Questions['+$index()+'].Priority', value: $index() }" />
         <input type="hidden" data-bind="attr: { name: 'Questions['+$index()+'].IsActive' }, value: isActive" />
-        <input type="hidden" data-bind="attr: { name: 'Questions['+$index()+'].Required' }, value: required" />
+        <input type="hidden" data-bind="attr: { name: 'Questions['+$index()+'].IsRequired' }, value: isRequired" />
     </div>
 
     <div class="form-actions">
@@ -141,8 +143,8 @@
             </div>
             <div class="span1">
                 @*<label for="Required">Required</label>
-                <input type="checkbox"  name="Required" value="true" data-bind="value: isRequired" checked />
-                <input type="checkbox"  name="Required" value="false" data-bind="value: isRequired" checked />*@
+                    <input type="checkbox"  name="Required" value="true" data-bind="value: isRequired" checked />
+                    <input type="checkbox"  name="Required" value="false" data-bind="value: isRequired" checked />*@
                 <label for="Type">IsRequred</label>
                 <select id="isRequired" name="isRequired" data-bind="value: isRequired" style="width : 80px">
                     <option>Yes</option>
@@ -151,8 +153,14 @@
                 </select>
             </div>
         </div>
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal">Close</button>
-            <button class="btn btn-primary" data-bind="click: $root.saveQuestion">Save</button>
+        <div class="row">
+            <div class="span6">
+                <textarea id="Body" name="Body" data-bind="cleditor: body"></textarea>
+            </div>
         </div>
     </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal">Close</button>
+        <button class="btn btn-primary" data-bind="click: $root.saveQuestion">Save</button>
+    </div>
+</div>

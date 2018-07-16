@@ -45,6 +45,13 @@ namespace SurveyTool.Models
                         .HasForeignKey(x => x.QuestionId)
                         .WillCascadeOnDelete(false);
 
+           
+
+            //modelBuilder.Entity<Question>()
+            //            .HasOptional(x => x.Options)
+            //            .WithMany()
+            //            .WillCascadeOnDelete(true);
+
             //modelBuilder.Entity<ApplicationUser>().ToTable("ApplicationUser");
             //modelBuilder.Entity<Survey>().ToTable("Survey");
             //modelBuilder.Entity<Question>().ToTable("Question");

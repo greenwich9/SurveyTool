@@ -78,6 +78,7 @@ namespace SurveyTool.Controllers
                     q.Title,
                     q.Body,
                     q.Type,
+                    q.IsRequired,
                     q.IsActive,
                     q.CreatedOn,
                     q.ModifiedOn,
@@ -92,6 +93,7 @@ namespace SurveyTool.Controllers
                     Type = q.Type,
                     SurveyId = q.SurveyId,
                     IsActive = q.IsActive,
+                    IsRequired = q.IsRequired,
                     CreatedOn = q.CreatedOn,
                     ModifiedOn = q.ModifiedOn,
                     Options = q.Options.ToList()

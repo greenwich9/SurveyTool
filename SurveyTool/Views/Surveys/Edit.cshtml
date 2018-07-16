@@ -76,7 +76,9 @@
                     @*<a data-bind="attr: { href: '/Question/Edit/'+id() }">
                         <span data-bind="visible: containOption()">Edit Options</span>
                     </a>*@
-                    <input id="btn1" type="submit" value="Edit Options" data-bind="attr: { formaction: '/Surveys/EditOption/@Model.Id/'+$index(), visiable: containOption()}">
+                    <div data-bind="visible : containOption()">
+                        <input id="btn1" type="submit" value="Edit Options" data-bind="attr: { formaction: '/Surveys/EditOption/@Model.Id/'+$index() }">
+                    </div>
                     @*<input type="submit" value="Edit Options" onclick="javascript: form.action='/Question/Edit/10'">*@
                 </div>
                 <div class="span1 accordion-toggle text-center">

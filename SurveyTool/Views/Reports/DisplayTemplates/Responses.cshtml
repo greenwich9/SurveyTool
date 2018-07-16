@@ -64,10 +64,13 @@
                         <ul>
                             @foreach (var opt in item.OptionsViewList)
                             {
-                                
-                                decimal a = (decimal)opt.NumSelected / (decimal)item.Answers.Count;  //--> result 0,5
-                                decimal b = a * 100;  //--> 50
-                                
+                                decimal a = 0;
+                                decimal b = 0;
+                                if (item.Answers.Count > 0) {
+                                    a = (decimal)opt.NumSelected / (decimal)item.Answers.Count;  //--> result 0,5
+                                    b = a * 100;  //--> 50
+                                }
+
                                 <li>@Html.Raw(opt.Text) : @opt.NumSelected (@b.ToString("#.##") %)</li>
                             }
                         </ul>

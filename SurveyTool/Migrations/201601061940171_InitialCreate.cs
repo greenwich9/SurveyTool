@@ -20,7 +20,7 @@ namespace SurveyTool.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Questions", t => t.Question_Id)
-                .ForeignKey("dbo.Questions", t => t.QuestionId)
+                .ForeignKey("dbo.Questions", t => t.QuestionId, cascadeDelete: true)
                 .Index(t => t.QuestionId)
                 .Index(t => t.Question_Id);
 

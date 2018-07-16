@@ -17,6 +17,7 @@
             });
         });
     </script>
+    
 }
 
 <div class="page-header">
@@ -31,33 +32,68 @@
         @foreach (var question in Model.Questions)
         {
             <li class="row">
-                <div class="span9">
+                <div class="span12">
                     <input type="hidden" name="Answers.Index" value="@question.Id" />
                     <input type="hidden" name="Answers[@question.Id].QuestionId" value="@question.Id" />
-                    @Html.Raw(question.Body)
-                </div>
-                <div class="span3">
+
+                    @if (@question.IsRequired.Equals("No"))
+                    {
+                        <span>@Html.Raw(question.Body)</span>
+                    }
+                    else
+                    {
+                        <span>@Html.Raw(question.Body) <span style="color:red">*</span></span>
+                    }
+                    <br />
+
 
                     @if (question.Type == "Text")
                     {
-                        <input class="span3" type="text" name="Answers[@question.Id].Value" placeholder="Enter your answer." />
+                        <br />
+                        if (@question.IsRequired.Equals("Yes"))
+                        {
+                            <input class="span6" type="text" name="Answers[@question.Id].Value" placeholder="Enter your answer." required />
+                        }
+                        else
+                        {
+                            <input class="span6" type="text" name="Answers[@question.Id].Value" placeholder="Enter your answer." />
+                        }
+
                     }
                     @if (question.Type == "Multitext")
                     {
-                        <input class="span3" type="text" name="Answers[@question.Id].Value" placeholder="Enter your answer." />
+                        <br />
+                        if (@question.IsRequired.Equals("Yes"))
+                        {
+                            <textarea class="span6" name="Answers[@question.Id].Value" placeholder="Enter your answer." required></textarea>
+                        }
+                        else
+                        {
+                            <textarea class="span6" name="Answers[@question.Id].Value" placeholder="Enter your answer." ></textarea>
+                        }
                     }
                     @if (question.Type == "RadioBox")
                     {
-                        foreach (var option in question.Options)
+                        if (@question.IsRequired.Equals("Yes"))
                         {
-                            <input type="radio" name="Answers[@question.Id].Value" value="@option.Id"> @Html.Raw(@option.Text)<br>
+                            foreach (var option in question.Options)
+                            {
+                                <input type="radio" name="Answers[@question.Id].Value" value="@option.Id" required> @Html.Raw(@option.Text)<br>
+                            }
+                        }
+                        else
+                        {
+                            foreach (var option in question.Options)
+                            {
+                                <input type="radio" name="Answers[@question.Id].Value" value="@option.Id"> @Html.Raw(@option.Text)<br>
+                            }
                         }
                         /**/
                         <br />
 
                     }
-
                 </div>
+                
             </li>
         }
     </ul>

@@ -214,6 +214,7 @@ namespace SurveyTool.Controllers
             _db.Entry(model).Property(x => x.Type).IsModified = false;
             _db.Entry(model).Property(x => x.SurveyId).IsModified = false;
             _db.Entry(model).Property(x => x.Title).IsModified = false;
+            _db.Entry(model).Property(x => x.IsRequired).IsModified = false;
             _db.SaveChanges();
             return RedirectToAction("EditOption", new { id = model.Id });
 

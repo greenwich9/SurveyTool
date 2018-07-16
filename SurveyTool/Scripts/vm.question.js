@@ -6,7 +6,7 @@
     self.type = ko.observable().extend({ required: true });
     self.body = ko.observable().extend({ required: true });
     self.isActive = ko.observable(true);
-    self.isRequired = ko.observable().extend({ required: true });
+    self.isRequired = ko.observable("Yes").extend({ required: true });
 
     self.modal = $('#add-option');
     self.options = ko.observableArray([]);
@@ -29,8 +29,8 @@
     };
 
     self.containOption = function () {
-        //return false;
-        return self.type() !== "Text" && self.isActive ? false : true;
+        //return "false";
+        return self.type() === "RadioBox" && self.isActive;
     };
 
 
