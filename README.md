@@ -1,6 +1,5 @@
 # ASP.NET MVC Survey Tool
 
-* http://github.com/jpo/aspnet-mvc-survey-tool
 
 ## DESCRIPTION:
 
@@ -12,10 +11,6 @@ ASP.NET MVC Survey Tool is a web application that allows users to create surveys
 * Create custom surveys
 * Take surveys
 * View survey results
-
-## REQUIREMENTS:
-
-NuGet Package Manager, ASP.NET MVC 5, and LocalDb.
 
 ## GETTING STARTED:
 
