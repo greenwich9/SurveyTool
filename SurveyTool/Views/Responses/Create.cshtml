@@ -24,7 +24,7 @@
     <h3>@ViewBag.Title</h3>
 </div>
 
-<form action="@Url.Action("Create", "Responses", new {surveyId = Request["surveyId"]})" method="post">
+<form action="@Url.Action("Create", "Responses", new {surveyId = Request["surveyId"], URL = @ViewBag.URL})" method="post">
     <div class="well well-small">
         <h4>Questions</h4>
     </div>

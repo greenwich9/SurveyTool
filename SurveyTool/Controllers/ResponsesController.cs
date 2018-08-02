@@ -8,7 +8,7 @@ using SurveyTool.Models;
 
 namespace SurveyTool.Controllers
 {
-    [Authorize]
+    
     public class ResponsesController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -18,6 +18,7 @@ namespace SurveyTool.Controllers
             _db = db;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult Index(int surveyId)
         {
@@ -50,8 +51,31 @@ namespace SurveyTool.Controllers
         }
 
         [HttpGet]
-        public ActionResult Create(int surveyId)
+        public ActionResult Create(int surveyId, string URL)
         {
+
+            bool URLisnull = false;
+            try
+            {
+                if (URL.Equals(""))
+                {
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                URLisnull = true;
+            }
+
+            if (!URLisnull)
+            {
+                var response = _db.Responses.Where(r => r.URL.Equals(URL)).ToList();
+                if (response.Count() > 0)
+                {
+                    return Content("You have already submitted your response. Thank you very much!");
+                }
+            }
+
             List<Question> questions = new List<Question>();
             var survey = _db.Surveys
                             .Where(s => s.Id == surveyId)
@@ -115,10 +139,10 @@ namespace SurveyTool.Controllers
             //                //System.Diagnostics.Debug.WriteLine(opt.Text);
             //                //System.Diagnostics.Debug.WriteLine("len " + question.Options.Count());
             //            }
-                        
+
             //        }
             //        question.Options = question.Options.Where(x=>x.IsActive == true).OrderBy(x => x.Priority).ToList();
-                    
+
             //    }
             //}
             //var options = _db.Options;
@@ -133,25 +157,48 @@ namespace SurveyTool.Controllers
             //            .Include("Questions.Options")
             //            .Select(x=>x.);
 
-
+            
+            ViewBag.URL = URL;
             return View(survey);
         }
 
         [HttpPost]
-        public ActionResult Create(int surveyId, string action, Response model)
+        public ActionResult Create(int surveyId, string action, Response model, string URL)
         {
+            //System.Diagnostics.Debug.WriteLine("zhe li" + URL);
             model.Answers = model.Answers.Where(a => !String.IsNullOrEmpty(a.Value)).ToList();
             model.SurveyId = surveyId;
-            model.CreatedBy = User.Identity.Name;
+            model.CreatedBy = "URL";
+            if (!User.Identity.Name.Equals(""))
+            {
+                model.CreatedBy = User.Identity.Name;
+            }
+            model.URL = URL;
+            bool URLisnull = false;
+            try
+            {
+                if (URL.Equals(""))
+                {
+                    model.URL = "Logged in";
+                }
+            }
+            catch (Exception e)
+            {
+                URLisnull = true;
+                model.URL = "Logged in";
+            }
+
+
+
             model.CreatedOn = DateTime.Now;
             _db.Responses.Add(model);
             _db.SaveChanges();
 
             TempData["success"] = "Your response was successfully saved!";
 
-            return action == "Next"
-                       ? RedirectToAction("Create", new {surveyId})
-                       : RedirectToAction("Index", "DashBoard");
+            return URLisnull
+                       ? RedirectToAction("Index", "DashBoard")
+                       : RedirectToAction("ThanksForResponse", "Responses");
         }
 
         [HttpPost]
@@ -161,6 +208,11 @@ namespace SurveyTool.Controllers
             _db.Entry(response).State = EntityState.Deleted;
             _db.SaveChanges();
             return Redirect(returnTo ?? Url.RouteUrl("Root"));
+        }
+
+        public ActionResult ThanksForResponse()
+        {
+            return Content("Thank you very much for your response!");
         }
     }
 }

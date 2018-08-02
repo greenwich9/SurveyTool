@@ -20,6 +20,8 @@ namespace SurveyTool.Models
 
         public ICollection<Answer> Answers { get; set; }
 
+        public string URL { get; set; }
+
         public int GetQuestionCount()
         {
             return Answers == null ? 0 : Answers.Count();

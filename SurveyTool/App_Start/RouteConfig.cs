@@ -19,6 +19,11 @@ namespace SurveyTool
                 defaults: new { controller = "Dashboard", action = "Index" });
 
             routes.MapRoute(
+               name: "CreateResponses",
+               url: "Surveys/{surveyId}/Responses/Create/{URL}",
+               defaults: new { controller = "Responses", action = "Create", URL = UrlParameter.Optional });
+
+            routes.MapRoute(
                 name: "Responses",
                 url: "Surveys/{surveyId}/Responses/{action}/{id}",
                 defaults: new { controller = "Responses", action = "Index", id = UrlParameter.Optional });
